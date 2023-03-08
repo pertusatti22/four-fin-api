@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -17,7 +17,7 @@ public class Conta {
     private String nome;
 
     @Column
-    private BigInteger valorInicial;
+    private BigDecimal valorInicial;
 
     public Long getId() {
         return id;
@@ -35,11 +35,11 @@ public class Conta {
         this.nome = nome;
     }
 
-    public BigInteger getValorInicial() {
+    public BigDecimal getValorInicial() {
         return valorInicial;
     }
 
-    public void setValorInicial(BigInteger valorInicial) {
+    public void setValorInicial(BigDecimal valorInicial) {
         this.valorInicial = valorInicial;
     }
 
