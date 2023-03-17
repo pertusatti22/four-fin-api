@@ -2,6 +2,7 @@ package com.fin.fourfinapi.jpa;
 
 import com.fin.fourfinapi.FourFinApiApplication;
 import com.fin.fourfinapi.domain.model.Conta;
+import com.fin.fourfinapi.domain.repository.ContaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -17,10 +18,10 @@ public class ConsultaContaMain {
                 .run(args);
 
 
-        CadastroConta cadastroConta = applicationContext.getBean(CadastroConta.class);
+        ContaRepository contaRepository = applicationContext.getBean(ContaRepository.class);
 
         //Teste de listar
-        List<Conta> contas = cadastroConta.listar();
+        List<Conta> contas = contaRepository.listar();
 
         for(Conta conta : contas) {
             System.out.println(conta.getNome());
@@ -30,12 +31,11 @@ public class ConsultaContaMain {
         Conta conta1 = new Conta();
         conta1.setNome("Caixa");
         conta1.setValorInicial(BigDecimal.valueOf(200.00));
-
-        conta1 = cadastroConta.salvar(conta1);
+        contaRepository.salvar(conta1);
 
         //teste de buscar
 
-        Conta conta2 = cadastroConta.buscar(1L);
+        Conta conta2 = contaRepository.buscar(1L);
 
         System.out.println(conta2.getNome());
 
@@ -44,15 +44,15 @@ public class ConsultaContaMain {
         conta3.setValorInicial(contas.get(2).getValorInicial());
         conta3.setId(3L);
         conta3.setNome("Bradesco");
-        cadastroConta.salvar(conta3);
+        contaRepository.salvar(conta3);
 
         //teste de excluir
         Conta conta4 = new Conta();
         conta4.setId(2L);
-        cadastroConta.remover(conta4);
+        contaRepository.remover(conta4);
 
         //Lista final
-        List<Conta> contas2 = cadastroConta.listar();
+        List<Conta> contas2 = contaRepository.listar();
 
         for(Conta conta : contas2) {
             System.out.println(conta.getNome());
