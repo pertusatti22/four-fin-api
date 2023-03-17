@@ -1,8 +1,6 @@
 package com.fin.fourfinapi.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,6 +8,7 @@ import java.util.Date;
 @Entity
 public class Transacao {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -17,12 +16,6 @@ public class Transacao {
 
     @Column
     private Date data;
-
-    @Column
-    private Categoria categoria;
-
-    @Column
-    private Conta conta;
 
     @Column
     private BigDecimal valor;

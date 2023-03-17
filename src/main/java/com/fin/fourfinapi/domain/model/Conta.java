@@ -1,8 +1,6 @@
 package com.fin.fourfinapi.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -11,6 +9,7 @@ import java.util.Objects;
 @Entity
 public class Conta {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
