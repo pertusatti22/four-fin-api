@@ -27,4 +27,10 @@ public class Transacao {
 
     @Column
     private String anotacao;
+
+    @ManyToOne
+    private Conta conta;
+
+    @ManyToOne
+    private Categoria categoria;
 }
