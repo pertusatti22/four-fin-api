@@ -6,3 +6,5 @@ insert into categoria (nome) values ('Alimentação');
 insert into categoria (nome) values ('Transporte');
 
 insert into transacao (anotacao, valor, categoria_id, conta_id) values('Almoço', -50.0, 1,1);
+
+insert into usuario (nome, email, senha) values ('Jackson', 'pertusatti22@gmail.com', '123456');

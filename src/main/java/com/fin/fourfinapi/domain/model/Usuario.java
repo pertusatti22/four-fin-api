@@ -4,33 +4,28 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Transacao {
-    @EqualsAndHashCode.Include
+public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column
-    private String anotacao;
+    private String nome;
 
     @Column
-    private Date data;
+    private String email;
 
     @Column
-    private BigDecimal valor;
+    private String senha;
 
     @Column
-    private TipoTransacao tipoTransacao;
-
-    @ManyToOne
-    private Conta conta;
-
-    @ManyToOne
-    private Categoria categoria;
+    private Date dataCadastro;
 }
