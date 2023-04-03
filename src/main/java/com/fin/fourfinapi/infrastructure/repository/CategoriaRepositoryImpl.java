@@ -4,6 +4,7 @@ import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
         return manager.find(Categoria.class, id);
     }
 
+    @Transactional
     @Override
     public Categoria salvar(Categoria categoria) {
         return manager.merge(categoria);
     }
 
+    @Transactional
     @Override
     public void remover(Categoria categoria) {
         categoria = buscar(categoria.getId());

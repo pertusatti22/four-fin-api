@@ -4,6 +4,7 @@ import com.fin.fourfinapi.domain.model.Usuario;
 import com.fin.fourfinapi.domain.repository.UsuarioRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,11 +25,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         return manager.find(Usuario.class, id);
     }
 
+    @Transactional
     @Override
     public Usuario salvar(Usuario usuario) {
         return manager.merge(usuario);
     }
 
+    @Transactional
     @Override
     public void remover(Usuario usuario) {
         usuario = buscar(usuario.getId());
