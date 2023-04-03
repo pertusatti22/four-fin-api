@@ -3,6 +3,7 @@ package com.fin.fourfinapi.api.controller;
 import com.fin.fourfinapi.domain.model.Usuario;
 import com.fin.fourfinapi.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/{usuarioId}")
-    public Usuario buscar(@PathVariable Long usuarioId) {
-        return usuarioRepository.buscar(usuarioId);
+    public ResponseEntity<Usuario> buscar(@PathVariable Long usuarioId) {
+        Usuario usuario = usuarioRepository.buscar(usuarioId);
+
+        if(usuario != null) {
+            return ResponseEntity.ok(usuario);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

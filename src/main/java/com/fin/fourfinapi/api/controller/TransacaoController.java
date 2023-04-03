@@ -4,6 +4,7 @@ import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,12 @@ public class TransacaoController {
     }
 
     @GetMapping("/{transacaoId}")
-    public Transacao buscar(@PathVariable Long transacaoId) {
-        return transacaoRepository.buscar(transacaoId);
+    public ResponseEntity<Transacao> buscar(@PathVariable Long transacaoId) {
+        Transacao transacao = transacaoRepository.buscar(transacaoId);
+
+        if(transacao != null){
+            return ResponseEntity.ok(transacao);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
