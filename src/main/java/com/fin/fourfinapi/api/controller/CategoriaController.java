@@ -3,10 +3,8 @@ package com.fin.fourfinapi.api.controller;
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class CategoriaController {
         return categoriaRepository.listar();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{categoriaId}")
     public Categoria buscar(@PathVariable Long categoriaId) {
         return categoriaRepository.buscar(categoriaId);
