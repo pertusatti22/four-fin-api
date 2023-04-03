@@ -2,6 +2,7 @@ package com.fin.fourfinapi.api.controller;
 
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,16 @@ public class CategoriaController {
     @ResponseStatus(HttpStatus.CREATED)
     public Categoria adicionar(@RequestBody Categoria categoria) {
         return categoriaRepository.salvar(categoria);
+    }
+
+    @PutMapping
+    public ResponseEntity<Categoria> atualizar(@PathVariable Long categoriaId, @RequestBody Categoria categoria) {
+        Categoria categoriaAtualizada = categoriaRepository.buscar(categoriaId);
+
+        BeanUtils.copyProperties(categoria, categoriaAtualizada, "id");
+
+        categoriaRepository.salvar(categoriaAtualizada);
+
+        return ResponseEntity.ok(categoriaAtualizada);
     }
 }

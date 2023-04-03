@@ -1,8 +1,8 @@
 package com.fin.fourfinapi.api.controller;
 
-import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.model.Usuario;
 import com.fin.fourfinapi.domain.repository.UsuarioRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +36,16 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario adicionar(@RequestBody Usuario usuario) {
         return usuarioRepository.salvar(usuario);
+    }
+
+    @PutMapping
+    public ResponseEntity<Usuario> atualizar(@PathVariable Long usuarioId, @RequestBody Usuario usuario) {
+        Usuario usuarioAtualizado = usuarioRepository.buscar(usuarioId);
+
+        BeanUtils.copyProperties(usuario, usuarioAtualizado, "id");
+
+        usuarioRepository.salvar(usuarioAtualizado);
+
+        return ResponseEntity.ok(usuarioAtualizado);
     }
 }
