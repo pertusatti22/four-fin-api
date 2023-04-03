@@ -1,14 +1,13 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +31,11 @@ public class TransacaoController {
             return ResponseEntity.ok(transacao);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Transacao adicionar(@RequestBody Transacao transacao) {
+        return transacaoRepository.salvar(transacao);
     }
 }
