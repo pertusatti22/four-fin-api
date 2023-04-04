@@ -38,7 +38,7 @@ public class TransacaoController {
         return transacaoRepository.salvar(transacao);
     }
 
-    @PutMapping
+    @PutMapping("/{transacaoId}")
     public ResponseEntity<Transacao> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao){
         Transacao transacaoAtualizada = transacaoRepository.buscar(transacaoId);
 

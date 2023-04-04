@@ -38,7 +38,7 @@ public class UsuarioController {
         return usuarioRepository.salvar(usuario);
     }
 
-    @PutMapping
+    @PutMapping("/{usuarioId}")
     public ResponseEntity<Usuario> atualizar(@PathVariable Long usuarioId, @RequestBody Usuario usuario) {
         Usuario usuarioAtualizado = usuarioRepository.buscar(usuarioId);
 

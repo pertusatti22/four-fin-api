@@ -39,7 +39,7 @@ public class ContaController {
         return contaRepository.salvar(conta);
     }
 
-    @PutMapping
+    @PutMapping("/{contaId}")
     public ResponseEntity<Conta> atualizar(@PathVariable Long contaId, @RequestBody Conta conta) {
         Conta contaAtualizada = contaRepository.buscar(contaId);
 

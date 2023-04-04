@@ -39,7 +39,7 @@ public class CategoriaController {
         return categoriaRepository.salvar(categoria);
     }
 
-    @PutMapping
+    @PutMapping("/{categoriaId}")
     public ResponseEntity<Categoria> atualizar(@PathVariable Long categoriaId, @RequestBody Categoria categoria) {
         Categoria categoriaAtualizada = categoriaRepository.buscar(categoriaId);
 
