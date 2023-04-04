@@ -43,10 +43,14 @@ public class ContaController {
     public ResponseEntity<Conta> atualizar(@PathVariable Long contaId, @RequestBody Conta conta) {
         Conta contaAtualizada = contaRepository.buscar(contaId);
 
-        BeanUtils.copyProperties(conta, contaAtualizada, "id");
+        if(contaAtualizada != null) {
+            BeanUtils.copyProperties(conta, contaAtualizada, "id");
 
-        contaRepository.salvar(contaAtualizada);
+            contaRepository.salvar(contaAtualizada);
 
-        return ResponseEntity.ok(contaAtualizada);
+            return ResponseEntity.ok(contaAtualizada);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

@@ -2,6 +2,7 @@ package com.fin.fourfinapi.api.controller;
 
 import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
+import org.apache.catalina.valves.rewrite.ResolverImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,10 +43,13 @@ public class TransacaoController {
     public ResponseEntity<Transacao> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao){
         Transacao transacaoAtualizada = transacaoRepository.buscar(transacaoId);
 
-        BeanUtils.copyProperties(transacao, transacaoAtualizada, "id");
+        if(transacaoAtualizada != null) {
+            BeanUtils.copyProperties(transacao, transacaoAtualizada, "id");
 
-        transacaoRepository.salvar(transacaoAtualizada);
+            transacaoRepository.salvar(transacaoAtualizada);
 
-        return ResponseEntity.ok(transacaoAtualizada);
+            return ResponseEntity.ok(transacaoAtualizada);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

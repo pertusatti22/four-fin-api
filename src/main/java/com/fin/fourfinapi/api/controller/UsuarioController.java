@@ -42,10 +42,14 @@ public class UsuarioController {
     public ResponseEntity<Usuario> atualizar(@PathVariable Long usuarioId, @RequestBody Usuario usuario) {
         Usuario usuarioAtualizado = usuarioRepository.buscar(usuarioId);
 
-        BeanUtils.copyProperties(usuario, usuarioAtualizado, "id");
+        if(usuarioAtualizado != null) {
+            BeanUtils.copyProperties(usuario, usuarioAtualizado, "id");
 
-        usuarioRepository.salvar(usuarioAtualizado);
+            usuarioRepository.salvar(usuarioAtualizado);
 
-        return ResponseEntity.ok(usuarioAtualizado);
+            return ResponseEntity.ok(usuarioAtualizado);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
+

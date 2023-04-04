@@ -43,10 +43,14 @@ public class CategoriaController {
     public ResponseEntity<Categoria> atualizar(@PathVariable Long categoriaId, @RequestBody Categoria categoria) {
         Categoria categoriaAtualizada = categoriaRepository.buscar(categoriaId);
 
-        BeanUtils.copyProperties(categoria, categoriaAtualizada, "id");
+        if(categoriaAtualizada != null) {
+            BeanUtils.copyProperties(categoria, categoriaAtualizada, "id");
 
-        categoriaRepository.salvar(categoriaAtualizada);
+            categoriaRepository.salvar(categoriaAtualizada);
 
-        return ResponseEntity.ok(categoriaAtualizada);
+            return ResponseEntity.ok(categoriaAtualizada);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
