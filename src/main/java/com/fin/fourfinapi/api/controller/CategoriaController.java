@@ -4,6 +4,7 @@ import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,21 @@ public class CategoriaController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{categoriaId}")
+    public ResponseEntity<Categoria> remover(@PathVariable Long categoriaId) {
+        try {
+            Categoria categoria = categoriaRepository.buscar(categoriaId);
+
+            if(categoria != null) {
+                categoriaRepository.remover(categoria);
+
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 }

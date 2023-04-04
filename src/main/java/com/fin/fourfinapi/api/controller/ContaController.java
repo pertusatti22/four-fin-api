@@ -4,6 +4,7 @@ import com.fin.fourfinapi.domain.model.Conta;
 import com.fin.fourfinapi.domain.repository.ContaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,21 @@ public class ContaController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{contaId}")
+    public ResponseEntity<Conta> remover(@PathVariable Long contaId) {
+        try {
+            Conta conta = contaRepository.buscar(contaId);
+
+            if(conta != null) {
+                contaRepository.remover(conta);
+
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 }
