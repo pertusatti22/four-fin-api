@@ -1,7 +1,10 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
+import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
+import com.fin.fourfinapi.domain.service.CadastroCategoriaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +20,9 @@ public class CategoriaController {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private CadastroCategoriaService cadastroCategoria;
 
     @GetMapping
     public List<Categoria> listar() {
@@ -37,7 +43,7 @@ public class CategoriaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Categoria adicionar(@RequestBody Categoria categoria) {
-        return categoriaRepository.salvar(categoria);
+        return cadastroCategoria.salvar(categoria);
     }
 
     @PutMapping("/{categoriaId}")
@@ -46,9 +52,7 @@ public class CategoriaController {
 
         if(categoriaAtualizada != null) {
             BeanUtils.copyProperties(categoria, categoriaAtualizada, "id");
-
             categoriaRepository.salvar(categoriaAtualizada);
-
             return ResponseEntity.ok(categoriaAtualizada);
         }
 
@@ -58,15 +62,13 @@ public class CategoriaController {
     @DeleteMapping("/{categoriaId}")
     public ResponseEntity<Categoria> remover(@PathVariable Long categoriaId) {
         try {
-            Categoria categoria = categoriaRepository.buscar(categoriaId);
+            cadastroCategoria.excluir(categoriaId);
+            return ResponseEntity.noContent().build();
 
-            if(categoria != null) {
-                categoriaRepository.remover(categoria);
-
-                return ResponseEntity.noContent().build();
-            }
+        } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
-        } catch (DataIntegrityViolationException e){
+
+        } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }

@@ -5,6 +5,7 @@ import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,8 +33,12 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 
     @Transactional
     @Override
-    public void remover(Categoria categoria) {
-        categoria = buscar(categoria.getId());
+    public void remover(Long id) {
+        Categoria categoria = buscar(id);
+
+        if(categoria == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(categoria);
 
     }
