@@ -28,6 +28,7 @@ public class TransacaoRepositoryImpl implements TransacaoRepository {
     public Transacao salvar(Transacao transacao) {
         return manager.merge(transacao);
     }
+
     @Transactional
     @Override
     public void remover(Transacao transacao) {

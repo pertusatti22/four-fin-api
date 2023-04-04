@@ -5,6 +5,7 @@ insert into conta (nome, valor_inicial) values ('NuBank', 150);
 insert into categoria (nome) values ('Alimentação');
 insert into categoria (nome) values ('Transporte');
 
-insert into transacao (anotacao, valor, categoria_id, conta_id) values('Almoço', -50.0, 1,1);
-
 insert into usuario (nome, email, senha) values ('Jackson', 'pertusatti22@gmail.com', '123456');
+
+INSERT INTO Transacao (anotacao, data_transacao, valor, tipo_transacao, conta_id, categoria_id) VALUES ('Aluguel', '2023-03-20', -1500.00, 'SAIDA', 1, 1);
+INSERT INTO Transacao (anotacao, data_transacao, valor, tipo_transacao, conta_id, categoria_id) VALUES ('Gasolina', '2023-03-15', -300.00, 'SAIDA', 1, 1);

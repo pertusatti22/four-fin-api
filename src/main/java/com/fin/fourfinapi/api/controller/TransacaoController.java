@@ -1,7 +1,9 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
+import com.fin.fourfinapi.domain.service.CadastroTransacaoService;
 import org.apache.catalina.valves.rewrite.ResolverImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class TransacaoController {
     @Autowired
     private TransacaoRepository transacaoRepository;
 
+    @Autowired
+    private CadastroTransacaoService cadastroTransacao;
+
     @GetMapping
     public List<Transacao> listar() {
         return transacaoRepository.listar();
@@ -35,9 +40,14 @@ public class TransacaoController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Transacao adicionar(@RequestBody Transacao transacao) {
-        return transacaoRepository.salvar(transacao);
+    public ResponseEntity<?> adicionar(@RequestBody Transacao transacao) {
+        try {
+            transacao = cadastroTransacao.salvar(transacao);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(transacao);
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{transacaoId}")
@@ -47,7 +57,7 @@ public class TransacaoController {
         if(transacaoAtualizada != null) {
             BeanUtils.copyProperties(transacao, transacaoAtualizada, "id");
 
-            transacaoRepository.salvar(transacaoAtualizada);
+            cadastroTransacao.salvar(transacaoAtualizada);
 
             return ResponseEntity.ok(transacaoAtualizada);
         }

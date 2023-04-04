@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -20,11 +20,12 @@ public class Transacao {
     private String anotacao;
 
     @Column
-    private Date data;
+    private LocalDate dataTransacao;
 
     @Column
     private BigDecimal valor;
 
+    @Enumerated(EnumType.STRING)
     @Column
     private TipoTransacao tipoTransacao;
 
