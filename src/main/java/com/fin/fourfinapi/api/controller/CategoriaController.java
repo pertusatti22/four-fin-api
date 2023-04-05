@@ -7,7 +7,6 @@ import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import com.fin.fourfinapi.domain.service.CadastroCategoriaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +32,8 @@ public class CategoriaController {
     public ResponseEntity<Categoria> buscar(@PathVariable Long categoriaId) {
         Categoria categoria = categoriaRepository.buscar(categoriaId);
 
-        if(categoria != null){
-        return ResponseEntity.ok(categoria);
+        if (categoria != null) {
+            return ResponseEntity.ok(categoria);
         }
 
         return ResponseEntity.notFound().build();
@@ -50,7 +49,7 @@ public class CategoriaController {
     public ResponseEntity<Categoria> atualizar(@PathVariable Long categoriaId, @RequestBody Categoria categoria) {
         Categoria categoriaAtualizada = categoriaRepository.buscar(categoriaId);
 
-        if(categoriaAtualizada != null) {
+        if (categoriaAtualizada != null) {
             BeanUtils.copyProperties(categoria, categoriaAtualizada, "id");
             cadastroCategoria.salvar(categoriaAtualizada);
             return ResponseEntity.ok(categoriaAtualizada);

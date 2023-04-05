@@ -1,5 +1,6 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/transacoes")
@@ -70,16 +73,20 @@ public class TransacaoController {
     @DeleteMapping("/{transacaoId}")
     public ResponseEntity<Transacao> remover(@PathVariable Long transacaoId) {
         try {
-            Transacao transacao = transacaoRepository.buscar(transacaoId);
-
-            if(transacao != null) {
-                transacaoRepository.remover(transacao);
-
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.notFound().build();
-        } catch (DataIntegrityViolationException e){
+            cadastroTransacao.excluir(transacaoId);
+            return ResponseEntity.noContent().build();
+            } catch (EntidadeNaoEncontradaException e) {
+               return ResponseEntity.notFound().build();
+            } catch (EntidadeEmUsoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+    }
+
+    @PatchMapping("/{transacaoId}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long transacaoId, @RequestBody Map<String, Objects> atributos) {
+        atributos.forEach((etiqueta, valor) ->{
+            System.out.println(etiqueta + " = " + valor);
+        });
+        return ResponseEntity.ok().build();
     }
 }

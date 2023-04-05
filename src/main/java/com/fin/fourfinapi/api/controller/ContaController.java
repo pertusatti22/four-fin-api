@@ -1,11 +1,12 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
+import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Conta;
 import com.fin.fourfinapi.domain.repository.ContaRepository;
 import com.fin.fourfinapi.domain.service.CadastroContaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,15 +61,11 @@ public class ContaController {
     @DeleteMapping("/{contaId}")
     public ResponseEntity<Conta> remover(@PathVariable Long contaId) {
         try {
-            Conta conta = contaRepository.buscar(contaId);
-
-            if(conta != null) {
-                contaRepository.remover(conta);
-
-                return ResponseEntity.noContent().build();
-            }
+            cadastroConta.excluir(contaId);
+            return ResponseEntity.noContent().build();
+            } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
-        } catch (DataIntegrityViolationException e){
+        } catch (EntidadeEmUsoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
