@@ -51,15 +51,18 @@ public class TransacaoController {
     }
 
     @PutMapping("/{transacaoId}")
-    public ResponseEntity<Transacao> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao){
+    public ResponseEntity<?> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao){
         Transacao transacaoAtualizada = transacaoRepository.buscar(transacaoId);
 
         if(transacaoAtualizada != null) {
             BeanUtils.copyProperties(transacao, transacaoAtualizada, "id");
+            try {
+                cadastroTransacao.salvar(transacaoAtualizada);
 
-            cadastroTransacao.salvar(transacaoAtualizada);
-
-            return ResponseEntity.ok(transacaoAtualizada);
+                return ResponseEntity.ok(transacaoAtualizada);
+            } catch (EntidadeNaoEncontradaException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }
         return ResponseEntity.notFound().build();
     }
