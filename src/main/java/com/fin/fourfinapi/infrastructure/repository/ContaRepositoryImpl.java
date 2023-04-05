@@ -5,6 +5,7 @@ import com.fin.fourfinapi.domain.repository.ContaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,8 +33,12 @@ public class ContaRepositoryImpl implements ContaRepository {
 
     @Transactional
     @Override
-    public void remover(Conta conta) {
-        conta = buscar(conta.getId());
+    public void remover(Long id) {
+        Conta conta = buscar(id);
+
+        if(conta == null){
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(conta);
     }
 }

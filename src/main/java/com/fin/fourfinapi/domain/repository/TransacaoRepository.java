@@ -12,5 +12,5 @@ public interface TransacaoRepository {
 
     Transacao salvar(Transacao transacao);
 
-    void remover(Transacao transacao);
+    void remover(Long id);
 }

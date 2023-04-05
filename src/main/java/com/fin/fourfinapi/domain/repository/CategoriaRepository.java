@@ -11,6 +11,6 @@ public interface CategoriaRepository {
 
     Categoria salvar(Categoria categoria);
 
-    void remover(Long categoriaId);
+    void remover(Long id);
 }
 

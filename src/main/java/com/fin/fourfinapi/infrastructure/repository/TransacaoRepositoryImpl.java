@@ -5,6 +5,7 @@ import com.fin.fourfinapi.domain.repository.TransacaoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,8 +32,12 @@ public class TransacaoRepositoryImpl implements TransacaoRepository {
 
     @Transactional
     @Override
-    public void remover(Transacao transacao) {
-        transacao = buscar(transacao.getId());
+    public void remover(Long id) {
+        Transacao transacao = buscar(id);
+
+        if(transacao == null){
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(transacao);
     }
 }
