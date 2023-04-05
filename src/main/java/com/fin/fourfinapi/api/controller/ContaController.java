@@ -2,6 +2,7 @@ package com.fin.fourfinapi.api.controller;
 
 import com.fin.fourfinapi.domain.model.Conta;
 import com.fin.fourfinapi.domain.repository.ContaRepository;
+import com.fin.fourfinapi.domain.service.CadastroContaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,9 @@ public class ContaController {
 
     @Autowired
     private ContaRepository contaRepository;
+
+    @Autowired
+    private CadastroContaService cadastroConta;
 
     @GetMapping
     public List<Conta> listar() {
@@ -37,7 +41,7 @@ public class ContaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Conta adicionar(@RequestBody Conta conta) {
-        return contaRepository.salvar(conta);
+        return cadastroConta.salvar(conta);
     }
 
     @PutMapping("/{contaId}")
@@ -46,9 +50,7 @@ public class ContaController {
 
         if(contaAtualizada != null) {
             BeanUtils.copyProperties(conta, contaAtualizada, "id");
-
-            contaRepository.salvar(contaAtualizada);
-
+            cadastroConta.salvar(contaAtualizada);
             return ResponseEntity.ok(contaAtualizada);
         }
 

@@ -1,6 +1,7 @@
 package com.fin.fourfinapi.domain.service;
 
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
+import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CadastroCategoriaService {
         try{
             categoriaRepository.remover(categoriaId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeEmUsoException(
+            throw new EntidadeNaoEncontradaException(
                     String.format("Não existe uma Categoria com o código %d", categoriaId));
         } catch (DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(

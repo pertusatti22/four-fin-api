@@ -10,5 +10,5 @@ public interface UsuarioRepository {
 
     Usuario salvar(Usuario usuario);
 
-    void remover(Usuario usuario);
+    void remover(Long id);
 }

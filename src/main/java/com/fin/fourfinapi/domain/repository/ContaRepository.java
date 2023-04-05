@@ -12,7 +12,7 @@ public interface ContaRepository {
 
     Conta salvar(Conta conta);
 
-    void remover(Conta conta);
+    void remover(Long id);
 
 
 }

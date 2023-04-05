@@ -59,7 +59,7 @@ public class UsuarioController {
             Usuario usuario = usuarioRepository.buscar(usuarioId);
 
             if(usuario != null) {
-                usuarioRepository.remover(usuario);
+                usuarioRepository.remover(usuarioId);
 
                 return ResponseEntity.noContent().build();
             }
