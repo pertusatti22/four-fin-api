@@ -49,7 +49,7 @@ public class ConsultaContaMain {
         //teste de excluir
         Conta conta4 = new Conta();
         conta4.setId(2L);
-        contaRepository.remover(conta4);
+        contaRepository.remover(conta4.getId());
 
         //Lista final
         List<Conta> contas2 = contaRepository.listar();

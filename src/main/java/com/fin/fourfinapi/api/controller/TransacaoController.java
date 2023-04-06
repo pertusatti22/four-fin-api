@@ -1,21 +1,21 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
 import com.fin.fourfinapi.domain.service.CadastroTransacaoService;
-import org.apache.catalina.valves.rewrite.ResolverImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/transacoes")
@@ -36,7 +36,7 @@ public class TransacaoController {
     public ResponseEntity<Transacao> buscar(@PathVariable Long transacaoId) {
         Transacao transacao = transacaoRepository.buscar(transacaoId);
 
-        if(transacao != null){
+        if (transacao != null) {
             return ResponseEntity.ok(transacao);
         }
         return ResponseEntity.notFound().build();
@@ -54,10 +54,10 @@ public class TransacaoController {
     }
 
     @PutMapping("/{transacaoId}")
-    public ResponseEntity<?> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao){
+    public ResponseEntity<?> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao) {
         Transacao transacaoAtualizada = transacaoRepository.buscar(transacaoId);
 
-        if(transacaoAtualizada != null) {
+        if (transacaoAtualizada != null) {
             BeanUtils.copyProperties(transacao, transacaoAtualizada, "id");
             try {
                 cadastroTransacao.salvar(transacaoAtualizada);
@@ -75,18 +75,36 @@ public class TransacaoController {
         try {
             cadastroTransacao.excluir(transacaoId);
             return ResponseEntity.noContent().build();
-            } catch (EntidadeNaoEncontradaException e) {
-               return ResponseEntity.notFound().build();
-            } catch (EntidadeEmUsoException e){
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.notFound().build();
+        } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
     @PatchMapping("/{transacaoId}")
-    public ResponseEntity<?> atualizarParcial(@PathVariable Long transacaoId, @RequestBody Map<String, Objects> atributos) {
-        atributos.forEach((etiqueta, valor) ->{
-            System.out.println(etiqueta + " = " + valor);
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long transacaoId,
+                                              @RequestBody Map<String, Object> atributos) {
+        Transacao atributosAtualizados = transacaoRepository.buscar(transacaoId);
+
+        if(atributosAtualizados == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        mergeTransacao(atributos, atributosAtualizados);
+
+        return atualizar(transacaoId, atributosAtualizados);
+    }
+
+    private static void mergeTransacao(Map<String, Object> atributosOrigem, Transacao transacaoAtualizada) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Transacao transacaoOrigem = objectMapper.convertValue(atributosOrigem, Transacao.class);
+
+        atributosOrigem.forEach((chave, valor) -> {
+            Field field = ReflectionUtils.findField(Transacao.class, chave);
+            field.setAccessible(true);
+            Object valorAtualizado = ReflectionUtils.getField(field, transacaoOrigem);
+            ReflectionUtils.setField(field, transacaoAtualizada, valorAtualizado);
         });
-        return ResponseEntity.ok().build();
     }
 }
