@@ -27,21 +27,27 @@ public class CadastroTransacaoService {
         Long categoriaId = transacao.getCategoria().getId();
         Long contaId = transacao.getConta().getId();
 
-        Categoria categoria = categoriaRepository.buscar(categoriaId);
-        Conta conta = contaRepository.buscar(contaId);
+        Categoria categoria = categoriaRepository
+                .findById(categoriaId)
+                .orElseThrow(
+                () -> new EntidadeNaoEncontradaException(
+                        "A Categoria informada não existe."));
 
-        if (categoria == null || conta == null) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("A Categoria ou Conta informada não existe."));
-        }
+        Conta conta = contaRepository
+                .findById(contaId)
+                .orElseThrow(
+                () ->  new EntidadeNaoEncontradaException(
+                        "A Conta informada não existe."));
 
+        transacao.setCategoria(categoria);
+        transacao.setConta(conta);
 
-        return transacaoRepository.salvar(transacao);
+        return transacaoRepository.save(transacao);
     }
 
     public void excluir(Long transacaoId) {
         try {
-            transacaoRepository.remover(transacaoId);
+            transacaoRepository.deleteById(transacaoId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Não existe uma Transação com o código %d", transacaoId));

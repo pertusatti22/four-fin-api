@@ -16,12 +16,12 @@ public class CadastroCategoriaService {
     private CategoriaRepository categoriaRepository;
 
     public Categoria salvar(Categoria categoria){
-        return categoriaRepository.salvar(categoria);
+        return categoriaRepository.save(categoria);
     }
 
     public void excluir(Long categoriaId){
         try{
-            categoriaRepository.remover(categoriaId);
+            categoriaRepository.deleteById(categoriaId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Não existe uma Categoria com o código %d", categoriaId));

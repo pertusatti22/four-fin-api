@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/transacoes")
@@ -29,15 +30,15 @@ public class TransacaoController {
 
     @GetMapping
     public List<Transacao> listar() {
-        return transacaoRepository.listar();
+        return transacaoRepository.findAll();
     }
 
     @GetMapping("/{transacaoId}")
     public ResponseEntity<Transacao> buscar(@PathVariable Long transacaoId) {
-        Transacao transacao = transacaoRepository.buscar(transacaoId);
+        Optional<Transacao> transacao = transacaoRepository.findById(transacaoId);
 
-        if (transacao != null) {
-            return ResponseEntity.ok(transacao);
+        if (transacao.isPresent()) {
+            return ResponseEntity.ok(transacao.get());
         }
         return ResponseEntity.notFound().build();
     }
@@ -55,13 +56,13 @@ public class TransacaoController {
 
     @PutMapping("/{transacaoId}")
     public ResponseEntity<?> atualizar(@PathVariable Long transacaoId, @RequestBody Transacao transacao) {
-        Transacao transacaoAtualizada = transacaoRepository.buscar(transacaoId);
+        Optional<Transacao> transacaoAtualizada = transacaoRepository.findById(transacaoId);
 
-        if (transacaoAtualizada != null) {
-            BeanUtils.copyProperties(transacao, transacaoAtualizada, "id");
+        if (transacaoAtualizada.isPresent()) {
+            BeanUtils.copyProperties(transacao, transacaoAtualizada.get(), "id");
+
             try {
-                cadastroTransacao.salvar(transacaoAtualizada);
-
+                Transacao transacaoSalva = cadastroTransacao.salvar(transacaoAtualizada.get());
                 return ResponseEntity.ok(transacaoAtualizada);
             } catch (EntidadeNaoEncontradaException e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
@@ -85,15 +86,15 @@ public class TransacaoController {
     @PatchMapping("/{transacaoId}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long transacaoId,
                                               @RequestBody Map<String, Object> atributos) {
-        Transacao atributosAtualizados = transacaoRepository.buscar(transacaoId);
+        Optional<Transacao> atributosAtualizados = transacaoRepository.findById(transacaoId);
 
         if(atributosAtualizados == null) {
             return ResponseEntity.notFound().build();
         }
 
-        mergeTransacao(atributos, atributosAtualizados);
+        mergeTransacao(atributos, atributosAtualizados.get());
 
-        return atualizar(transacaoId, atributosAtualizados);
+        return atualizar(transacaoId, atributosAtualizados.get());
     }
 
     private static void mergeTransacao(Map<String, Object> atributosOrigem, Transacao transacaoAtualizada) {

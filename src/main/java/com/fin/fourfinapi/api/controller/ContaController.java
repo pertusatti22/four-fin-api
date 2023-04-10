@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/contas")
@@ -25,15 +26,15 @@ public class ContaController {
 
     @GetMapping
     public List<Conta> listar() {
-        return contaRepository.listar();
+        return contaRepository.findAll();
     }
 
     @GetMapping("/{contaId}")
     public ResponseEntity<Conta> buscar(@PathVariable Long contaId) {
-        Conta conta = contaRepository.buscar(contaId);
+        Optional<Conta> conta = contaRepository.findById(contaId);
 
-        if(conta != null){
-        return ResponseEntity.ok(conta);
+        if(conta.isPresent()){
+        return ResponseEntity.ok(conta.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -47,12 +48,12 @@ public class ContaController {
 
     @PutMapping("/{contaId}")
     public ResponseEntity<Conta> atualizar(@PathVariable Long contaId, @RequestBody Conta conta) {
-        Conta contaAtualizada = contaRepository.buscar(contaId);
+        Optional<Conta> contaAtualizada = contaRepository.findById(contaId);
 
         if(contaAtualizada != null) {
-            BeanUtils.copyProperties(conta, contaAtualizada, "id");
-            cadastroConta.salvar(contaAtualizada);
-            return ResponseEntity.ok(contaAtualizada);
+            BeanUtils.copyProperties(conta, contaAtualizada.get(), "id");
+            Conta contaSalva = cadastroConta.salvar(contaAtualizada.get());
+            return ResponseEntity.ok(contaSalva);
         }
 
         return ResponseEntity.notFound().build();

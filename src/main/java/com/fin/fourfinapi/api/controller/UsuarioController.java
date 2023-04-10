@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -25,16 +26,17 @@ public class UsuarioController {
 
     @GetMapping
     public List<Usuario> listar() {
-        return usuarioRepository.listar();
+        return usuarioRepository.findAll();
     }
 
     @GetMapping("/{usuarioId}")
     public ResponseEntity<Usuario> buscar(@PathVariable Long usuarioId) {
-        Usuario usuario = usuarioRepository.buscar(usuarioId);
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 
         if (usuario != null) {
-            return ResponseEntity.ok(usuario);
+            return ResponseEntity.ok(usuario.get());
         }
+
         return ResponseEntity.notFound().build();
     }
 
@@ -47,12 +49,12 @@ public class UsuarioController {
 
     @PutMapping("/{usuarioId}")
     public ResponseEntity<Usuario> atualizar(@PathVariable Long usuarioId, @RequestBody Usuario usuario) {
-        Usuario usuarioAtualizado = usuarioRepository.buscar(usuarioId);
+        Optional<Usuario> usuarioAtualizado = usuarioRepository.findById(usuarioId);
 
         if (usuarioAtualizado != null) {
-            BeanUtils.copyProperties(usuario, usuarioAtualizado, "id");
-            cadastroUsuario.salvar(usuarioAtualizado);
-            return ResponseEntity.ok(usuarioAtualizado);
+            BeanUtils.copyProperties(usuario, usuarioAtualizado.get(), "id");
+            Usuario usuarioSalvo = cadastroUsuario.salvar(usuarioAtualizado.get());
+            return ResponseEntity.ok(usuarioSalvo);
         }
         return ResponseEntity.notFound().build();
     }

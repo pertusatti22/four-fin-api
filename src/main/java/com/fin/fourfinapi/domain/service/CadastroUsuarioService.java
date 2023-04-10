@@ -16,12 +16,12 @@ public class CadastroUsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public Usuario salvar(Usuario usuario) {
-        return usuarioRepository.salvar(usuario);
+        return usuarioRepository.save(usuario);
     }
 
     public void excluir(Long usuarioId) {
         try {
-            usuarioRepository.remover(usuarioId);
+            usuarioRepository.deleteById(usuarioId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Não existe um Usuario com o código %d", usuarioId));

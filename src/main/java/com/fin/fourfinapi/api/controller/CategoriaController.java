@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/categorias")
@@ -25,15 +26,15 @@ public class CategoriaController {
 
     @GetMapping
     public List<Categoria> listar() {
-        return categoriaRepository.listar();
+        return categoriaRepository.findAll();
     }
 
     @GetMapping("/{categoriaId}")
     public ResponseEntity<Categoria> buscar(@PathVariable Long categoriaId) {
-        Categoria categoria = categoriaRepository.buscar(categoriaId);
+        Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
 
-        if (categoria != null) {
-            return ResponseEntity.ok(categoria);
+        if (categoria.isPresent()) {
+            return ResponseEntity.ok(categoria.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -47,12 +48,12 @@ public class CategoriaController {
 
     @PutMapping("/{categoriaId}")
     public ResponseEntity<Categoria> atualizar(@PathVariable Long categoriaId, @RequestBody Categoria categoria) {
-        Categoria categoriaAtualizada = categoriaRepository.buscar(categoriaId);
+        Optional<Categoria> categoriaAtualizada = categoriaRepository.findById(categoriaId);
 
         if (categoriaAtualizada != null) {
-            BeanUtils.copyProperties(categoria, categoriaAtualizada, "id");
-            cadastroCategoria.salvar(categoriaAtualizada);
-            return ResponseEntity.ok(categoriaAtualizada);
+            BeanUtils.copyProperties(categoria, categoriaAtualizada.get(), "id");
+            Categoria categoriaSalva = cadastroCategoria.salvar(categoriaAtualizada.get());
+            return ResponseEntity.ok(categoriaSalva);
         }
 
         return ResponseEntity.notFound().build();

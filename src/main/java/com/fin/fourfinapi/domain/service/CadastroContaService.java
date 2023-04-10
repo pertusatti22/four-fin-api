@@ -16,12 +16,12 @@ public class CadastroContaService {
     private ContaRepository contaRepository;
 
     public Conta salvar(Conta conta) {
-        return contaRepository.salvar(conta);
+        return contaRepository.save(conta);
     }
 
     public void excluir(Long contaId) {
         try {
-            contaRepository.remover(contaId);
+            contaRepository.deleteById(contaId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Não existe uma Conta com o código %d", contaId));
