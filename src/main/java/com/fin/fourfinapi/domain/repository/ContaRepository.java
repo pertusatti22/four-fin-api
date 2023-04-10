@@ -1,18 +1,14 @@
 package com.fin.fourfinapi.domain.repository;
 
 import com.fin.fourfinapi.domain.model.Conta;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ContaRepository {
+@Repository
+public interface ContaRepository extends JpaRepository<Conta, Long> {
 
-    List<Conta> listar();
-
-    Conta buscar(Long id);
-
-    Conta salvar(Conta conta);
-
-    void remover(Long id);
 
 
 }

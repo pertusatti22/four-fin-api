@@ -1,16 +1,10 @@
 package com.fin.fourfinapi.domain.repository;
 
 import com.fin.fourfinapi.domain.model.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface CategoriaRepository {
-    List<Categoria> listar();
-
-    Categoria buscar(Long id);
-
-    Categoria salvar(Categoria categoria);
-
-    void remover(Long id);
+@Repository
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 }
 
