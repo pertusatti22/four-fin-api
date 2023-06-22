@@ -14,6 +14,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +32,17 @@ public class TransacaoController {
     @GetMapping
     public List<Transacao> listar() {
         return transacaoRepository.findAll();
+    }
+
+    @GetMapping("/anotacao")
+    public List<Transacao> listarPorAnotacao(@RequestParam("anotacao") String anotacao) {
+        return transacaoRepository.findAllByAnotacaoContaining(anotacao);
+    }
+
+    @GetMapping("/valor")
+    public List<Transacao> transacoesPorValor(
+            BigDecimal valorInicial, BigDecimal valorFinal) {
+        return transacaoRepository.findAllByValorBetween(valorInicial, valorFinal);
     }
 
     @GetMapping("/{transacaoId}")
