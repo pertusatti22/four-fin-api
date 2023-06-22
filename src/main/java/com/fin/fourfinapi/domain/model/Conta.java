@@ -22,5 +22,7 @@ public class Conta {
 
     @Column
     private BigDecimal valorInicial;
-
+    
+    @Column
+    private Boolean ativo = Boolean.TRUE;
 }

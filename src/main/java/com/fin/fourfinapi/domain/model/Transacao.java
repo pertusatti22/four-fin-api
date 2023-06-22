@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -16,22 +16,24 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String anotacao;
 
-    @Column
-    private LocalDate dataTransacao;
+    @Column(nullable = false)
+    private OffsetDateTime dataTransacao;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal valor;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(nullable = false)
     private TipoTransacao tipoTransacao;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Conta conta;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Categoria categoria;
 }
