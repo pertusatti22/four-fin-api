@@ -60,7 +60,7 @@ public class TransacaoController {
     public ResponseEntity<?> adicionar(@RequestBody Transacao transacao) {
         try {
             transacao = cadastroTransacao.salvar(transacao);
-
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(transacao);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

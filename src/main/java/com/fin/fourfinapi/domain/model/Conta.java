@@ -1,10 +1,12 @@
 package com.fin.fourfinapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Data
@@ -22,7 +24,15 @@ public class Conta {
 
     @Column
     private BigDecimal valorInicial;
+
+    @Column
+    private BigDecimal saldo;
     
     @Column
     private Boolean ativo = Boolean.TRUE;
+    
+    @JsonBackReference
+    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
+    private List<Transacao> transacoesConta;
+        
 }

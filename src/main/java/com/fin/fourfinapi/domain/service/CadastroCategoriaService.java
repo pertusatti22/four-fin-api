@@ -3,11 +3,15 @@ package com.fin.fourfinapi.domain.service;
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Categoria;
+import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class CadastroCategoriaService {
@@ -31,4 +35,18 @@ public class CadastroCategoriaService {
         }
     }
 
+    public void atualizarValorFinal(Categoria categoria) {
+        BigDecimal valorFinal = categoria.getVFinal();
+        BigDecimal valorInicial = categoria.getVInicial();
+        List<Transacao> transacoes = categoria.getTransacoesCategoria();
+
+        BigDecimal valorTotalTransacoes = transacoes.stream()
+                .map(Transacao::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if(valorInicial != null) {
+            valorFinal = valorInicial.add(valorTotalTransacoes);
+        } else {
+            valorFinal = valorTotalTransacoes;
+        }
+    }
 }

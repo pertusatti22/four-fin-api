@@ -1,5 +1,8 @@
 package com.fin.fourfinapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +13,7 @@ import java.time.OffsetDateTime;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Transacao {
     @EqualsAndHashCode.Include
     @Id
@@ -30,10 +34,12 @@ public class Transacao {
     private TipoTransacao tipoTransacao;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JsonManagedReference
+    @JoinColumn(name = "conta_id", nullable = false) // Adjust the column name
     private Conta conta;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JsonManagedReference
+    @JoinColumn(name = "categoria_id", nullable = false) // Adjust the column name
     private Categoria categoria;
 }

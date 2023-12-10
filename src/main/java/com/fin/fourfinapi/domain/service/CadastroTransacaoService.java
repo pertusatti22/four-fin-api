@@ -22,6 +22,10 @@ public class CadastroTransacaoService {
     private CategoriaRepository categoriaRepository;
     @Autowired
     private ContaRepository contaRepository;
+    @Autowired
+    CadastroCategoriaService cadastroCategoriaService;
+    @Autowired
+    CadastroContaService cadastroContaService;
 
     public Transacao salvar(Transacao transacao){
         Long categoriaId = transacao.getCategoria().getId();
@@ -40,8 +44,10 @@ public class CadastroTransacaoService {
                         "A Conta informada não existe."));
 
         transacao.setCategoria(categoria);
+        cadastroCategoriaService.atualizarValorFinal(categoria);
         transacao.setConta(conta);
-
+        cadastroContaService.atualizarValorFinal(conta);
+        
         return transacaoRepository.save(transacao);
     }
 
