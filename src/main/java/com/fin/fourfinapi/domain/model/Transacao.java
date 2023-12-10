@@ -13,7 +13,6 @@ import java.time.OffsetDateTime;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Transacao {
     @EqualsAndHashCode.Include
     @Id
@@ -34,12 +33,10 @@ public class Transacao {
     private TipoTransacao tipoTransacao;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "conta_id", nullable = false) // Adjust the column name
     private Conta conta;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "categoria_id", nullable = false) // Adjust the column name
     private Categoria categoria;
 }

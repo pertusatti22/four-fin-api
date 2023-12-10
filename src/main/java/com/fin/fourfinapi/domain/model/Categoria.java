@@ -23,16 +23,6 @@ public class Categoria {
     private String nome;
 
     @Column
-    private BigDecimal vInicial;
-
-    @Column
-    private BigDecimal vFinal;
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    private List<Transacao> transacoesCategoria;
-    
-    @Column
     public Long getId() {
         return id;
     }

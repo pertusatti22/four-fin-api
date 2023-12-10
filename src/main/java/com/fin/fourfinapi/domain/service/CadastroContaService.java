@@ -35,18 +35,4 @@ public class CadastroContaService {
         }
     }
     
-    public void atualizarValorFinal(Conta conta) {
-        BigDecimal valorFinal = conta.getSaldo();
-        BigDecimal valorInicial = conta.getValorInicial();
-        List<Transacao> transacoes = conta.getTransacoesConta();
-        
-        BigDecimal valorTotalTransacoes = transacoes.stream()
-                .map(Transacao::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        if(valorInicial != null) {
-            valorFinal = valorInicial.add(valorTotalTransacoes);
-        } else {
-            valorFinal = valorTotalTransacoes;
-        }
-    }
 }

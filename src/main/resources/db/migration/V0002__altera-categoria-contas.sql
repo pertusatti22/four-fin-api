@@ -1,8 +1,0 @@
--- Categoria
-ALTER TABLE categoria
-ADD COLUMN v_inicial DECIMAL(19,2) DEFAULT 0,
-ADD COLUMN v_final DECIMAL(19,2) DEFAULT 0;
-
--- Conta
-ALTER TABLE conta
-ADD COLUMN saldo DECIMAL(19,2) DEFAULT 0;

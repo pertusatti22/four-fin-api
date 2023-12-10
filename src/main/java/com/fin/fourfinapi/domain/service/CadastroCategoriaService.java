@@ -34,19 +34,4 @@ public class CadastroCategoriaService {
                     String.format("Categoria de código %d não pode ser removida, pois está em uso", categoriaId));
         }
     }
-
-    public void atualizarValorFinal(Categoria categoria) {
-        BigDecimal valorFinal = categoria.getVFinal();
-        BigDecimal valorInicial = categoria.getVInicial();
-        List<Transacao> transacoes = categoria.getTransacoesCategoria();
-
-        BigDecimal valorTotalTransacoes = transacoes.stream()
-                .map(Transacao::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        if(valorInicial != null) {
-            valorFinal = valorInicial.add(valorTotalTransacoes);
-        } else {
-            valorFinal = valorTotalTransacoes;
-        }
-    }
 }

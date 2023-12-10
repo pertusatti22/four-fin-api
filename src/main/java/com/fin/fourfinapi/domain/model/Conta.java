@@ -24,15 +24,7 @@ public class Conta {
 
     @Column
     private BigDecimal valorInicial;
-
-    @Column
-    private BigDecimal saldo;
     
     @Column
     private Boolean ativo = Boolean.TRUE;
-    
-    @JsonBackReference
-    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
-    private List<Transacao> transacoesConta;
-        
 }
