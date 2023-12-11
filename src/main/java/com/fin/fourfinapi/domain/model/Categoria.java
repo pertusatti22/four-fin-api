@@ -1,6 +1,5 @@
 package com.fin.fourfinapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,4 +26,18 @@ public class Categoria {
         return id;
     }
     
+    @OneToMany(mappedBy = "categoria")
+    private List<Transacao> transacoes;
+
+    public BigDecimal calcularTotalTransacoes() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        if (transacoes != null) {
+            for (Transacao transacao : transacoes) {
+                total = total.add(transacao.getValor());
+            }
+        }
+
+        return total;
+    }
 }

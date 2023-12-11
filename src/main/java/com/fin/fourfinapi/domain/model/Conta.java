@@ -1,6 +1,5 @@
 package com.fin.fourfinapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,4 +26,23 @@ public class Conta {
     
     @Column
     private Boolean ativo = Boolean.TRUE;
+
+    @OneToMany(mappedBy = "conta")
+    private List<Transacao> transacoes;
+
+    public BigDecimal calcularSaldo() {
+        BigDecimal saldo = getValorInicial();
+
+        if (transacoes != null) {
+            for (Transacao transacao : transacoes) {
+                if (transacao.getTipoTransacao() == TipoTransacao.ENTRADA) {
+                    saldo = saldo.add(transacao.getValor());
+                } else {
+                    saldo = saldo.subtract(transacao.getValor());
+                }
+            }
+        }
+
+        return saldo;
+    }
 }
