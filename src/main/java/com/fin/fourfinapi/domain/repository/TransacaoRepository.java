@@ -17,4 +17,7 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 
     @Query("SELECT COALESCE(SUM(t.valor), 0) FROM Transacao t WHERE t.categoria.id = :categoriaId")
     BigDecimal somarValorPorCategoria(@Param("categoriaId") Long categoriaId);
+
+    @Query("SELECT COALESCE(SUM(t.valor), 0) FROM Transacao t WHERE t.conta.id = :contaId")
+    BigDecimal somarValorPorConta(@Param("contaId") Long contaId);
 }

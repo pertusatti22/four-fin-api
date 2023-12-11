@@ -50,6 +50,11 @@ public class TransacaoController {
     public BigDecimal totalPorCategoria(@PathVariable Long categoriaId){
         return transacaoRepository.somarValorPorCategoria(categoriaId);
     }
+
+    @GetMapping("/conta/{contaId}")
+    public BigDecimal totalPorConta(@PathVariable Long contaId){
+        return transacaoRepository.somarValorPorConta(contaId);
+    }
     
     @GetMapping("/{transacaoId}")
     public ResponseEntity<Transacao> buscar(@PathVariable Long transacaoId) {

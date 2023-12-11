@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class CadastroTransacaoService {
@@ -62,5 +63,15 @@ public class CadastroTransacaoService {
 
     public BigDecimal somarValorPorCategoria(Long categoriaId) {
         return transacaoRepository.somarValorPorCategoria(categoriaId);
+    }
+    
+    public BigDecimal somarValorPorConta(Long contaId) {
+        Conta conta = contaRepository
+                .findById(contaId)
+                .orElseThrow(
+                        () ->  new EntidadeNaoEncontradaException(
+                                "A Conta informada não existe."));
+
+        return conta.getValorInicial().add(transacaoRepository.somarValorPorConta(contaId));
     }
 }
