@@ -34,22 +34,8 @@ public class ContaController {
     public ResponseEntity<Conta> buscar(@PathVariable Long contaId) {
         Optional<Conta> conta = contaRepository.findById(contaId);
 
-        if(conta.isPresent()){
-        return ResponseEntity.ok(conta.get());
-        }
+        return conta.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
-        return ResponseEntity.notFound().build();
-    }
-    
-    @GetMapping("/{contaId}/saldo")
-    public ResponseEntity<BigDecimal> obterSaldo(@PathVariable Long contaId) {
-        Optional<Conta> conta = contaRepository.findById(contaId);
-
-        if(conta.isPresent()) {
-            BigDecimal saldo = conta.get().calcularSaldo();
-            return ResponseEntity.ok(saldo);
-        }
-        return ResponseEntity.notFound().build();
     }
     
     @PostMapping

@@ -30,10 +30,10 @@ public class Transacao {
     private TipoTransacao tipoTransacao;
 
     @ManyToOne
-    @JoinColumn(name = "conta_id", nullable = false) // Adjust the column name
+    @JoinColumn(name = "conta_id", nullable = false)
     private Conta conta;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false) // Adjust the column name
+    @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 }

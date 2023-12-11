@@ -45,7 +45,12 @@ public class TransacaoController {
             BigDecimal valorInicial, BigDecimal valorFinal) {
         return transacaoRepository.findAllByValorBetween(valorInicial, valorFinal);
     }
-
+    
+    @GetMapping("/categoria/{categoriaId}")
+    public BigDecimal totalPorCategoria(@PathVariable Long categoriaId){
+        return transacaoRepository.somarValorPorCategoria(categoriaId);
+    }
+    
     @GetMapping("/{transacaoId}")
     public ResponseEntity<Transacao> buscar(@PathVariable Long transacaoId) {
         Optional<Transacao> transacao = transacaoRepository.findById(transacaoId);
