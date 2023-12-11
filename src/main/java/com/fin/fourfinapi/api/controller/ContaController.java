@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,13 +34,10 @@ public class ContaController {
     public ResponseEntity<Conta> buscar(@PathVariable Long contaId) {
         Optional<Conta> conta = contaRepository.findById(contaId);
 
-        if(conta.isPresent()){
-        return ResponseEntity.ok(conta.get());
-        }
+        return conta.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
-        return ResponseEntity.notFound().build();
     }
-
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Conta adicionar(@RequestBody Conta conta) {

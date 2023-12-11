@@ -14,10 +14,12 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"}, methods = {RequestMethod.GET})
 @RestController
 @RequestMapping("/transacoes")
 public class TransacaoController {
@@ -33,6 +35,27 @@ public class TransacaoController {
         return transacaoRepository.findAll();
     }
 
+    @GetMapping("/anotacao")
+    public List<Transacao> listarPorAnotacao(@RequestParam("anotacao") String anotacao) {
+        return transacaoRepository.findAllByAnotacaoContaining(anotacao);
+    }
+
+    @GetMapping("/valor")
+    public List<Transacao> transacoesPorValor(
+            BigDecimal valorInicial, BigDecimal valorFinal) {
+        return transacaoRepository.findAllByValorBetween(valorInicial, valorFinal);
+    }
+    
+    @GetMapping("/categoria/{categoriaId}")
+    public BigDecimal totalPorCategoria(@PathVariable Long categoriaId){
+        return transacaoRepository.somarValorPorCategoria(categoriaId);
+    }
+
+    @GetMapping("/conta/{contaId}")
+    public BigDecimal totalPorConta(@PathVariable Long contaId){
+        return transacaoRepository.somarValorPorConta(contaId);
+    }
+    
     @GetMapping("/{transacaoId}")
     public ResponseEntity<Transacao> buscar(@PathVariable Long transacaoId) {
         Optional<Transacao> transacao = transacaoRepository.findById(transacaoId);
@@ -47,7 +70,7 @@ public class TransacaoController {
     public ResponseEntity<?> adicionar(@RequestBody Transacao transacao) {
         try {
             transacao = cadastroTransacao.salvar(transacao);
-
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(transacao);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

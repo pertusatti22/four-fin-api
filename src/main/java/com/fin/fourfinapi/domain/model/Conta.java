@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Data
@@ -22,5 +23,7 @@ public class Conta {
 
     @Column
     private BigDecimal valorInicial;
-
+    
+    @Column
+    private Boolean ativo = Boolean.TRUE;
 }
