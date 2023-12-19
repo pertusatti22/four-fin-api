@@ -13,9 +13,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
 @Service
 public class CadastroTransacaoService {
 
@@ -59,19 +56,5 @@ public class CadastroTransacaoService {
             throw new EntidadeEmUsoException(
                     String.format("Transação de código %d não pode ser removido, pois está em uso", transacaoId));
         }
-    }
-
-    public BigDecimal somarValorPorCategoria(Long categoriaId) {
-        return transacaoRepository.somarValorPorCategoria(categoriaId);
-    }
-    
-    public BigDecimal somarValorPorConta(Long contaId) {
-        Conta conta = contaRepository
-                .findById(contaId)
-                .orElseThrow(
-                        () ->  new EntidadeNaoEncontradaException(
-                                "A Conta informada não existe."));
-
-        return conta.getValorInicial().add(transacaoRepository.somarValorPorConta(contaId));
     }
 }

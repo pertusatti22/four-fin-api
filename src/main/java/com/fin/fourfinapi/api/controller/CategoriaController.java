@@ -1,10 +1,12 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.api.dto.CategoriaValorDTO;
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import com.fin.fourfinapi.domain.service.CadastroCategoriaService;
+import com.fin.fourfinapi.domain.service.CategoriaContaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,23 +25,28 @@ public class CategoriaController {
 
     @Autowired
     private CadastroCategoriaService cadastroCategoria;
+    
+    @Autowired
+    private CategoriaContaService categoriaContaService;
 
     @GetMapping
     public List<Categoria> listar() {
         return categoriaRepository.findAll();
     }
-
+    
+    @GetMapping("/totais")
+    public List<CategoriaValorDTO> listarComValor() {
+        return categoriaContaService.listarCategoriaComValor();
+    }
+    
     @GetMapping("/{categoriaId}")
     public ResponseEntity<Categoria> buscar(@PathVariable Long categoriaId) {
         Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
 
-        if (categoria.isPresent()) {
-            return ResponseEntity.ok(categoria.get());
-        }
+        return categoria.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
-        return ResponseEntity.notFound().build();
     }
-
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Categoria adicionar(@RequestBody Categoria categoria) {
@@ -50,7 +57,7 @@ public class CategoriaController {
     public ResponseEntity<Categoria> atualizar(@PathVariable Long categoriaId, @RequestBody Categoria categoria) {
         Optional<Categoria> categoriaAtualizada = categoriaRepository.findById(categoriaId);
 
-        if (categoriaAtualizada != null) {
+        if (categoriaAtualizada.isPresent()) {
             BeanUtils.copyProperties(categoria, categoriaAtualizada.get(), "id");
             Categoria categoriaSalva = cadastroCategoria.salvar(categoriaAtualizada.get());
             return ResponseEntity.ok(categoriaSalva);
