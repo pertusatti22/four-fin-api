@@ -1,6 +1,7 @@
 package com.fin.fourfinapi.domain.service;
 
 import com.fin.fourfinapi.api.dto.CategoriaValorDTO;
+import com.fin.fourfinapi.api.dto.ContaValorDTO;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.model.Conta;
@@ -35,7 +36,17 @@ public class CategoriaContaService {
                 .collect(Collectors.toList());
     }
 
+    public List<ContaValorDTO> listarContaComValor() {
+        List<Conta> contas = contaRepository.findAll();
 
+        return contas.stream()
+                .map(conta -> new ContaValorDTO(
+                        conta.getNome(),
+                        somarValorPorConta(conta.getId())
+                ))
+                .collect(Collectors.toList());
+    }
+    
     public BigDecimal somarValorPorCategoria(Long categoriaId) {
         return transacaoRepository.somarValorPorCategoria(categoriaId);
     }

@@ -1,10 +1,12 @@
 package com.fin.fourfinapi.api.controller;
 
+import com.fin.fourfinapi.api.dto.ContaValorDTO;
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Conta;
 import com.fin.fourfinapi.domain.repository.ContaRepository;
 import com.fin.fourfinapi.domain.service.CadastroContaService;
+import com.fin.fourfinapi.domain.service.CategoriaContaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,16 @@ public class ContaController {
 
     @Autowired
     private CadastroContaService cadastroConta;
+    
+    @Autowired
+    private CategoriaContaService categoriaContaService;
 
+    
+
+    @GetMapping("/totais")
+    public List<ContaValorDTO> listarComValor() {
+        return categoriaContaService.listarContaComValor();
+    }
     @GetMapping
     public List<Conta> listar() {
         return contaRepository.findAll();
