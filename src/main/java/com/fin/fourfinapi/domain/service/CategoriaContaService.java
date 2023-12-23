@@ -41,8 +41,10 @@ public class CategoriaContaService {
 
         return contas.stream()
                 .map(conta -> new ContaValorDTO(
+                        conta.getId(),
                         conta.getNome(),
-                        somarValorPorConta(conta.getId())
+                        somarValorPorConta(conta.getId()),
+                        conta.getAtivo()
                 ))
                 .collect(Collectors.toList());
     }

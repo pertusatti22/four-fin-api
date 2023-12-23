@@ -9,11 +9,15 @@ import java.math.BigDecimal;
 @Setter
 public class ContaValorDTO {
     
+    private Long id;
     private String nome;
     private BigDecimal valor;
+    private Boolean ativo;
 
-    public ContaValorDTO(String nome, BigDecimal valor) {
+    public ContaValorDTO(Long id, String nome, BigDecimal valor, Boolean ativo) {
+        this.id = id;
         this.nome = nome;
         this.valor = valor;
+        this.ativo = ativo;
     }
 }
