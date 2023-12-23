@@ -30,6 +30,7 @@ public class CategoriaContaService {
 
         return categorias.stream()
                 .map(categoria -> new CategoriaValorDTO(
+                        categoria.getId(),
                         categoria.getNome(),
                         somarValorPorCategoria(categoria.getId())
                 ))
