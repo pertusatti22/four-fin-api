@@ -15,7 +15,7 @@
 	<description>Projeto de Gerenciador financeiro pessoal</description>
 	<properties>
 		<java.version>17</java.version>
-		<java.runtime.version>17</java.runtime.version>
+		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -103,8 +103,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.12.0</version> <!-- Use a versão apropriada -->
 				<configuration>
-					<source>17</source> 
-					<target>17</target> 
+					<source>1.7</source> 
+					<target>1.7</target>
+					<release>8</release>
 				</configuration>
 			</plugin>
 		</plugins>
