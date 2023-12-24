@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +58,7 @@ public class ContaController {
     public ResponseEntity<Conta> atualizar(@PathVariable Long contaId, @RequestBody Conta conta) {
         Optional<Conta> contaAtualizada = contaRepository.findById(contaId);
 
-        if(contaAtualizada != null) {
+        if(contaAtualizada.isPresent()) {
             BeanUtils.copyProperties(conta, contaAtualizada.get(), "id");
             Conta contaSalva = cadastroConta.salvar(contaAtualizada.get());
             return ResponseEntity.ok(contaSalva);
