@@ -14,9 +14,7 @@
 	<packaging>war</packaging>
 	<name>four-fin-api</name>
 	<description>Projeto de Gerenciador financeiro pessoal</description>
-	<properties>
-		<java.version>17</java.version>
-	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,7 +85,7 @@
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.11.0</version>
+			<version>3.12.1</version>
 			<type>maven-plugin</type>
 		</dependency>
 	</dependencies>
