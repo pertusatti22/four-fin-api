@@ -1,37 +1,29 @@
-create table categoria(
-    id bigint not null auto_increment,
-    nome varchar(60) not null,
-    
-    primary key (id)
-) engine=InnoDB default charset=utf8;
+CREATE TABLE categoria (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(60) NOT NULL
+);
 
-create table conta(
-    id bigint not null auto_increment,
-    nome varchar(60) not null,
-    valor_inicial decimal(19,2),
-    ativo tinyint(1) not null,
-    
-    primary key (id)
-) engine=InnoDB default charset=utf8;
+CREATE TABLE conta (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(60) NOT NULL,
+    valor_inicial NUMERIC(19,2),
+    ativo BOOLEAN NOT NULL
+);
 
-create table transacao(
-    id bigint not null auto_increment,
-    anotacao varchar(255) not null,
-    data_transacao datetime not null,
-    valor decimal(19,2) not null,
-    tipo_transacao varchar(20) not null,
-    conta_id bigint,
-    categoria_id bigint,   
-    
-    primary key (id)
-) engine=InnoDB default charset=utf8;
+CREATE TABLE transacao (
+    id BIGSERIAL PRIMARY KEY,
+    anotacao VARCHAR(255) NOT NULL,
+    data_transacao TIMESTAMP NOT NULL,
+    valor NUMERIC(19,2) NOT NULL,
+    tipo_transacao VARCHAR(20) NOT NULL,
+    conta_id BIGINT REFERENCES conta(id),
+    categoria_id BIGINT REFERENCES categoria(id)
+);
 
-create table usuario(
-    id bigint not null auto_increment,
-    nome varchar(255),
-    email varchar(255) not null,
-    senha varchar(255) not null,
-    data_cadastro datetime not null,
-    
-    primary key (id)
-) engine=InnoDB default charset=utf8;
+CREATE TABLE usuario (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    data_cadastro TIMESTAMP NOT NULL
+);
