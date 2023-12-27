@@ -29,6 +29,6 @@ public class Usuario {
     private String senha;
 
     @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "timestamp with time zone")
     private OffsetDateTime dataCadastro;
 }
