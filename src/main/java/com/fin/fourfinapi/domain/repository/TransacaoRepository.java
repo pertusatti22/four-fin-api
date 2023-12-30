@@ -1,5 +1,6 @@
 package com.fin.fourfinapi.domain.repository;
 
+import com.fin.fourfinapi.domain.model.Conta;
 import com.fin.fourfinapi.domain.model.Transacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 
@@ -15,6 +18,8 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 
     List<Transacao> findAllByValorBetween(BigDecimal valorInicial, BigDecimal valorFinal);
 
+    List<Transacao> findAllByConta(Optional<Conta> conta);
+    
     @Query("SELECT COALESCE(SUM(t.valor), 0) FROM Transacao t WHERE t.categoria.id = :categoriaId")
     BigDecimal somarValorPorCategoria(@Param("categoriaId") Long categoriaId);
 

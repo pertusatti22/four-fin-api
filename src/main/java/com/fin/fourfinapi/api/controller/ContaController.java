@@ -4,9 +4,10 @@ import com.fin.fourfinapi.api.dto.ContaValorDTO;
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Conta;
+import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.ContaRepository;
 import com.fin.fourfinapi.domain.service.CadastroContaService;
-import com.fin.fourfinapi.domain.service.CategoriaContaService;
+import com.fin.fourfinapi.domain.service.ContaTransacaoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,17 +28,23 @@ public class ContaController {
     private CadastroContaService cadastroConta;
     
     @Autowired
-    private CategoriaContaService categoriaContaService;
+    private ContaTransacaoService contaTransacaoService;
 
     
 
     @GetMapping("/totais")
     public List<ContaValorDTO> listarComValor() {
-        return categoriaContaService.listarContaComValor();
+        return contaTransacaoService.listarContaComValor();
     }
+    
     @GetMapping
     public List<Conta> listar() {
         return contaRepository.findAll();
+    }
+
+    @GetMapping("/transacoes/{contaId}")
+    public List<Transacao> listarTransacoesPorConta(@PathVariable Long contaId) {
+        return contaTransacaoService.listarPorConta(contaId);
     }
 
     @GetMapping("/{contaId}")

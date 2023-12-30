@@ -3,6 +3,7 @@ package com.fin.fourfinapi.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fin.fourfinapi.domain.exception.EntidadeEmUsoException;
 import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
+import com.fin.fourfinapi.domain.model.Conta;
 import com.fin.fourfinapi.domain.model.Transacao;
 import com.fin.fourfinapi.domain.repository.TransacaoRepository;
 import com.fin.fourfinapi.domain.service.CadastroTransacaoService;
@@ -39,13 +40,13 @@ public class TransacaoController {
     public List<Transacao> listarPorAnotacao(@RequestParam("anotacao") String anotacao) {
         return transacaoRepository.findAllByAnotacaoContaining(anotacao);
     }
-
+        
     @GetMapping("/valor")
     public List<Transacao> transacoesPorValor(
             BigDecimal valorInicial, BigDecimal valorFinal) {
         return transacaoRepository.findAllByValorBetween(valorInicial, valorFinal);
     }
-    
+        
     @GetMapping("/categoria/{categoriaId}")
     public BigDecimal totalPorCategoria(@PathVariable Long categoriaId){
         return transacaoRepository.somarValorPorCategoria(categoriaId);

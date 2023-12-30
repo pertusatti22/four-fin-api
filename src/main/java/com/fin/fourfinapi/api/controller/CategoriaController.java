@@ -6,7 +6,7 @@ import com.fin.fourfinapi.domain.exception.EntidadeNaoEncontradaException;
 import com.fin.fourfinapi.domain.model.Categoria;
 import com.fin.fourfinapi.domain.repository.CategoriaRepository;
 import com.fin.fourfinapi.domain.service.CadastroCategoriaService;
-import com.fin.fourfinapi.domain.service.CategoriaContaService;
+import com.fin.fourfinapi.domain.service.CategoriaTransacaoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class CategoriaController {
     private CadastroCategoriaService cadastroCategoria;
     
     @Autowired
-    private CategoriaContaService categoriaContaService;
+    private CategoriaTransacaoService categoriaTransacaoService;
 
     @GetMapping
     public List<Categoria> listar() {
@@ -36,7 +36,7 @@ public class CategoriaController {
     
     @GetMapping("/totais")
     public List<CategoriaValorDTO> listarComValor() {
-        return categoriaContaService.listarCategoriaComValor();
+        return categoriaTransacaoService.listarCategoriaComValor();
     }
     
     @GetMapping("/{categoriaId}")
