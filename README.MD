@@ -4,11 +4,11 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ## Descrição
-A **Four-Fin API** é um sistema desenvolvido em **Java Spring Boot** para o gerenciamento financeiro pessoal. O sistema permite:
+A **Four-Fin API** é uma API Backend em desenvolvimento em **Java Spring Boot** para o gerenciamento financeiro pessoal. O sistema permite:
 - Criar e gerenciar **contas** bancárias
 - Registrar e classificar **transações** financeiras
 - Organizar despesas e receitas em **categorias**
-- Conectar-se a um banco de dados **PostgreSQL** para armazenamento seguro e eficiente
+- Conectar-se a um banco de dados **SQL** para armazenamento seguro e eficiente
 
 ## Tecnologias Utilizadas
 - **Linguagem**: Java 17+
