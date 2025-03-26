@@ -17,9 +17,3 @@ A **Four-Fin API** é um sistema desenvolvido em **Java Spring Boot** para o ger
 - **Gerenciamento de Dependências**: Maven
 - **Migração de Banco**: Flyway
 - **ORM**: Spring Data JPA
-
-## Como Rodar o Projeto
-### 1. Clonar o Repositório
-```bash
-git clone https://github.com/pertusatti22/four-fin-api.git
-cd four-fin-api
